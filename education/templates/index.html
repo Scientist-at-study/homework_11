@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+
+    {% block content %}
+
+    <div class="d-flex justify-content-around">
+        {% for course in courses %}
+        <div>
+            <a href="{% url 'course_detail' course.id %}">
+                {{ course.name }}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+
+<hr>
+
+    <div class="container py-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for lesson in lessons %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+                    </h5>
+                    <p class="card-text">
+                        {{ lesson.about|truncatewords:20}}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">{{ lesson.course }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+    {% endblock content %}

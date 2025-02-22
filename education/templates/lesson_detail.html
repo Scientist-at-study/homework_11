@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col">
+    <div class="card h-100">
+
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+            </h5>
+            <p class="card-text">
+                {{ lesson.about }}
+            </p>
+        </div>
+
+        <h3>Izoh:</h3>
+        <ul>
+            {% for comment in comments %}
+                <li>
+                    <strong>{{ comment.user_name }}:</strong> {{ comment.comment }}
+
+                    {% if user.is_authenticated and user.username == comment.user_name %}
+                        {% if perms.study.delete_comment %}
+                        <a href="{% url 'delete_comment' comment.id %}" onclick="return confirm('Izohni ochirmoqchimisiz ?');">Ochirish</a>
+                        {% endif %}
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>Hali izohlar yo‘q.</li>
+            {% endfor %}
+        </ul>
+
+        {% if user.is_authenticated %}
+            <h3>Izoh qoldirish</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Jonatish</button>
+            </form>
+        {% else %}
+            <p><a href="{% url 'login' %}">Izoh qoldirish uchun royhatdan oting</a>.</p>
+        {% endif %}
+
+        <div class="card-footer">
+            <small class="text-muted">{{ lesson.course }}</small>
+        </div>
+    </div>
+</div>
+{% endblock content %}

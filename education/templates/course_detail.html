@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+
+    {% block content %}
+    <div class="col">
+            <div class="card h-100">
+                <img src={{course.photo.url}} class="card-img-top" alt="Skyscrapers"/>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'course_detail' course.id %}">{{ course.title }}</a>
+                    </h5>
+                    <p class="card-text">
+                        {{ course.description}}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">{{ course.start_date }}</small>
+                </div>
+            </div>
+        </div>
+    <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+                    </h5>
+                    <p class="card-text">
+                        {{ lesson.about}}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">{{ lesson.course }}</small>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}

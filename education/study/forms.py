@@ -12,9 +12,6 @@ class CommentForm(forms.ModelForm):
             "comment": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }
 
-    def save(self, commit=True):
-        comment = super().save(commit=False)
-        return comment
 
 
 class LoginForm(AuthenticationForm):

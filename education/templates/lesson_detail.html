@@ -20,6 +20,11 @@
                     <strong>{{ comment.user_name }}:</strong> {{ comment.comment }}
 
                     {% if user.is_authenticated and user.username == comment.user_name %}
+
+                        {% if perms.study.update_comment %}
+                        <a href="{% url 'update_comment' comment.id %}">Tahrirlash</a>
+                        {% endif %}
+
                         {% if perms.study.delete_comment %}
                         <a href="{% url 'delete_comment' comment.id %}" onclick="return confirm('Izohni ochirmoqchimisiz ?');">Ochirish</a>
                         {% endif %}

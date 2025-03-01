@@ -55,6 +55,27 @@ def lesson_detail(request, lesson_id):
     return render(request, "lesson_detail.html", {"lesson": lesson, "comments": comments, "form": form})
 
 
+@permission_required("study.update_comment", raise_exception=True)
+def update_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if comment.user_name != request.user.username:
+        messages.error(request, "Siz faqat o‘z izohlaringizni o'zgartirishingiz mumkin!")
+        return redirect("lesson_detail", lesson_id=comment.lesson.id)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Izoh yangilandi!")
+            return redirect("lesson_detail", lesson_id=comment.lesson.id)
+    else:
+        form = CommentForm(instance=comment)
+
+    return render(request, "update_comment.html", {"form": form, "comment": comment})
+
+
+
 @permission_required("study.delete_comment", raise_exception=True)
 def delete_comment(request: HttpRequest, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
@@ -115,8 +136,10 @@ def profile(request):
     if request.user.is_authenticated:
         context = {}
         try:
+            lessons = Lesson.objects.filter(author=request.user)
             profile = Profile.objects.get(user=request.user)
             context['profile'] = profile
+            context['lessons'] = lessons
         except:
             pass
         return render(request, "auth/profile.html", context)

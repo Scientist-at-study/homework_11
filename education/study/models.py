@@ -39,6 +39,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=100, verbose_name="Darsning nomi")
     course = models.ForeignKey(Course, on_delete=models.CASCADE,  verbose_name="Kurs")
     about = models.TextField(verbose_name="Dars haqida qisqacha malumot", null=True, blank=True)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
         return f"{self.course.name} - {self.title}"
